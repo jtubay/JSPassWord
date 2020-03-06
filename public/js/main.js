@@ -5,18 +5,53 @@ const resultEl = document.getElementById('result');
 const lengthEl = document.getElementById('length');
 const uppercaseEl = document.getElementById('uppercase');
 const lowercaseEl = document.getElementById('lowercase');
-const numberEl = document.getElementById('number');
+const numberEl = document.getElementById('numbers');
 const symbolsEl = document.getElementById('symbols');
 const generateEl = document.getElementById('generate');
 const clipboardEl = document.getElementById('clipboard');
 
 
-
+//gen event listen
 generateEl.addEventListener('click', () => {
     // const length = parseInt(lengthEl.value);
     const length = +lengthEl.value;
-    log(typeof length)
-})
+    const hasLower = lowercaseEl.checked;
+    const hasUpper = uppercaseEl.checked;
+    const hasNumber = numberEl.checked;
+    const hasSymbol = symbolsEl.checked;
+ 
+    resultEl.innerText = generatePassword(
+        hasLower, 
+        hasUpper, 
+        hasNumber, 
+        hasSymbol,
+        length
+    );
+});
+//gen password function
+const generatePassword = (lower, upper, number, symbol, length) => {
+ 
+   let generatedPassword = '';
+   
+   const typesCount = lower + upper + number + symbol;
+   
+
+   const typesArr = [{lower}, {upper}, {number}, {symbol}].filter(item => Object.values(item)[0]);
+
+   
+   if(typesCount === 0) {
+       return  resultEl.innerText = 'pick something';
+   }
+   for(let i = 0; i < length; i += typesCount) {
+       typesArr.forEach(type => {
+           const funcName = Object.keys(type)[0];
+           generatedPassword += randomFunc[funcName]();
+       })
+    }
+    const finalPassword = generatedPassword.slice(0, length);
+    return finalPassword;
+
+}
 
 const getRandomLower = () => {
     return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
@@ -35,6 +70,7 @@ const getRandomSymbol = () => {
     return symbols[Math.floor(Math.random() * symbols.length)];
 
 }
+
 const randomFunc = {
     lower: getRandomLower,
     upper: getRandomUpper,
@@ -42,7 +78,7 @@ const randomFunc = {
     symbol: getRandomSymbol
 };
 
-log(randomFunc.lower())
+
 /*const app = () => {
 
     getRandomSymbol();
