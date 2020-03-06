@@ -28,6 +28,23 @@ generateEl.addEventListener('click', () => {
         length
     );
 });
+
+//copy pw to clipboard
+clipboardEl.addEventListener('click', () => {
+    const textarea = document.createElement('textarea');
+    const password = resultEl.innerText;
+
+    if(!password) {
+        return;
+    }
+    textarea.value = password;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
+    alert('pw copied to clipboard')
+})
+
 //gen password function
 const generatePassword = (lower, upper, number, symbol, length) => {
  
